@@ -1,13 +1,31 @@
-import mongoose from "mongoose";
+// This approach is taken from https://github.com/vercel/next.js/tree/canary/examples/with-mongodb
+import { MongoClient, ServerApiVersion } from "mongodb";
 
-const MONGODB_URI = process.env.MONGODB_URI;
-
-export default dbConnect;
-
-async function dbConnect() {
-  if (!MONGODB_URI) {
-    throw new Error("Please chech your MONGODB connection...");
-  }
-  await mongoose.connect(MONGODB_URI);
-  return mongoose;
+if (!process.env.MONGODB_URI) {
+  throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
 }
+
+const uri = process.env.MONGODB_URI;
+
+const options = {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+};
+
+let client;
+
+if (process.env.NODE_ENV === "development") {
+  // Use global variable to preserve value during HMR
+  if (!global._mongoClient) {
+    global._mongoClient = new MongoClient(uri, options);
+  }
+  client = global._mongoClient;
+} else {
+  // Production: create a fresh client
+  client = new MongoClient(uri, options);
+}
+
+export default client;
