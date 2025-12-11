@@ -1,11 +1,22 @@
-import React from "react";
+import { signIn } from "@/auth";
 
-const page = () => {
+export function SignIn() {
   return (
-    <div>
-      <h1>signIn page</h1>
-    </div>
+    <form
+      action={async (formData) => {
+        "use server";
+        await signIn("credentials", formData);
+      }}
+    >
+      <label>
+        Email
+        <input name="email" type="email" />
+      </label>
+      <label>
+        Password
+        <input name="password" type="password" />
+      </label>
+      <button>Sign In</button>
+    </form>
   );
-};
-
-export default page;
+}

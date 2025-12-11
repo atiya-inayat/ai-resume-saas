@@ -16,6 +16,7 @@ const options = {
 };
 
 let client;
+let clientPromise;
 
 if (process.env.NODE_ENV === "development") {
   // Use global variable to preserve value during HMR
@@ -28,4 +29,6 @@ if (process.env.NODE_ENV === "development") {
   client = new MongoClient(uri, options);
 }
 
-export default client;
+clientPromise = client.connect();
+
+export default clientPromise;
