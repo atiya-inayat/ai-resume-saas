@@ -38,7 +38,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             credentials
           );
 
-          // 3️⃣ Fetch the user from DB with email and hashed password
+          // 3️⃣ Fetch the user from DB with email
           const user = await getUserFromDb(email);
 
           // 4️⃣ If no user found, return null to indicate invalid login
