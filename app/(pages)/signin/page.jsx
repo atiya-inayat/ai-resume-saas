@@ -1,22 +1,26 @@
 import { signIn } from "@/auth";
 
-export function SignIn() {
+export default function SignIn() {
   return (
     <form
       action={async (formData) => {
         "use server";
+
         await signIn("credentials", formData);
       }}
+      className="flex flex-col gap-4"
     >
       <label>
         Email
-        <input name="email" type="email" />
+        <input name="email" type="email" required />
       </label>
+
       <label>
         Password
-        <input name="password" type="password" />
+        <input name="password" type="password" required />
       </label>
-      <button>Sign In</button>
+
+      <button type="submit">Sign In</button>
     </form>
   );
 }
